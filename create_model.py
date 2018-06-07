@@ -21,7 +21,7 @@ def create_VGG():
     x = vgg_16.layers[-1].output
 
     # add last FC layer
-    x = Dropout(0.6)(x)
+    x = Dropout(0.75)(x)
     x = Dense(10, kernel_initializer = 'he_uniform', activation = 'softmax')(x)
 
     # create the new model

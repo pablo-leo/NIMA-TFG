@@ -36,8 +36,8 @@ class BatchCreator(object):
     def next(self):
         # build a mini-batch
 
-        batch_x = np.zeros((self.batch_size, 224, 224, 3), dtype = 'uint8')
-        batch_y = np.zeros((self.batch_size, 10)) # one-hot encoding
+        batch_x = np.zeros((self.batch_size, 224, 224, 3), dtype = np.float32)
+        batch_y = np.zeros((self.batch_size, 10), dtype = np.float32) # one-hot encoding
                 
         # load and return "batch_size" images
         for i in range(self.batch_size):
@@ -49,13 +49,13 @@ class BatchCreator(object):
             case = os.path.join(self.images_dir, str(self.imgs_ids[img_index]) + '.jpg')
 
             # load image, change color structure and resize it
-            img = cv2.resize(cv2.cvtColor(cv2.imread(case, 1), cv2.COLOR_BGR2RGB), (256, 256))
+            img = cv2.resize(cv2.cvtColor(cv2.imread(case, 1), cv2.COLOR_BGR2RGB), (256, 256))/255
             
             # get croping starting points
             x, y = np.random.randint(0,32,2)
             
             # store cropped image
-            batch_x[i] = img[x:x+224,y:224+y]
+            batch_x[i] = img[x:x+224, y:224+y]
             
             # store "normalized" score distribution
             batch_y[i] = self.imgs_rates[img_index]/np.sum(self.imgs_rates[img_index])
@@ -91,8 +91,8 @@ class BatchSequence(Sequence):
         idx2 = np.min([idx1 + self.batch_size, self.n_samples])
         idxs = np.arange(idx1, idx2)
         
-        batch_x = np.zeros((len(idxs), 224, 224, 3), dtype = 'uint8')
-        batch_y = np.zeros((len(idxs), 10)) # one-hot encoding
+        batch_x = np.zeros((len(idxs), 224, 224, 3), dtype = np.float32)
+        batch_y = np.zeros((len(idxs), 10), dtype = np.float32) # one-hot encoding
 
         # load and return "batch_size" images
         for i in range(len(idxs)):
@@ -101,7 +101,7 @@ class BatchSequence(Sequence):
             case = os.path.join(self.images_dir, str(self.imgs_ids[idxs[i]]) + '.jpg')
 
             # load image, change color structure, resize it and store it
-            batch_x[i] = cv2.resize(cv2.cvtColor(cv2.imread(case, 1), cv2.COLOR_BGR2RGB), (224, 224))
+            batch_x[i] = cv2.resize(cv2.cvtColor(cv2.imread(case, 1), cv2.COLOR_BGR2RGB), (224, 224))/255
 
             # store score distribution
             batch_y[i] = self.imgs_rates[i]/np.sum(self.imgs_rates[idxs[i]])
