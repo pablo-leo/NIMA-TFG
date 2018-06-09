@@ -104,6 +104,6 @@ class BatchSequence(Sequence):
             batch_x[i] = cv2.resize(cv2.cvtColor(cv2.imread(case, 1), cv2.COLOR_BGR2RGB), (224, 224))/255
 
             # store score distribution
-            batch_y[i] = self.imgs_rates[i]/np.sum(self.imgs_rates[idxs[i]])
+            batch_y[i] = self.imgs_rates[idxs[i]]/np.sum(self.imgs_rates[idxs[i]])
 
         return batch_x, batch_y
