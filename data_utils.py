@@ -20,7 +20,7 @@ def load_ava(workdir):
 def clean_data(workdir, x, y):
     
     # define directory of training images
-    train_dir_images = os.path.join(workdir, 'images')
+    train_dir_images = os.path.join(workdir)
 
     # list containing the ids of the images that are not in the directory
     lost_images = []

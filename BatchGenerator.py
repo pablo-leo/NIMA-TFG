@@ -4,9 +4,12 @@ from keras.utils import Sequence
 
 class BatchCreator(object):
 
-    def __init__(self, x, y, batch_size, images_dir, augmentation_fn=None):
+    def __init__(self, x, y, batch_size, images_dir):
         '''
-        dataset: numpy array containing the Image IDs and the Rating distribution
+        x: numpy array containing the Image IDs
+        y: numpy array containing the rating distribution
+        batch_size: desired batch size
+        images_dir: directory of the images
         '''
         
         # params
@@ -14,7 +17,6 @@ class BatchCreator(object):
         self.imgs_rates      = y                # image rate distribution
         self.batch_size      = batch_size       # number of patches per batch
         self.images_dir      = images_dir       # directory containing the images
-        self.augmentation_fn = augmentation_fn  # augmentation function
         
         # batch information
         self.n_samples = len(self.imgs_ids)
@@ -66,7 +68,13 @@ class BatchCreator(object):
 class BatchSequence(Sequence):
 
     def __init__(self, x, y, batch_size, images_dir):
-
+        '''
+        x: numpy array containing the Image IDs
+        y: numpy array containing the rating distribution
+        batch_size: desired batch size
+        images_dir: directory of the images
+        '''
+        
         # params
         self.imgs_ids   = x          # image IDs
         self.imgs_rates = y          # image rate distribution
@@ -88,7 +96,7 @@ class BatchSequence(Sequence):
 
         # create indexes for samples
         idx1 = idx * self.batch_size
-        idx2 = np.min([idx1 + self.batch_size, self.n_samples])
+        idx2 = np.min([idx1 + self.batch_size, self.n_samples]) # last batch
         idxs = np.arange(idx1, idx2)
         
         batch_x = np.zeros((len(idxs), 224, 224, 3), dtype = np.float32)
