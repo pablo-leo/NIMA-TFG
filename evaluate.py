@@ -68,16 +68,16 @@ def generate_scores(parser):
     print('----------------------------------------')
 
 if __name__ == '__main__':
-    p = ArgumentParser('Neural Image Assesment')
+    p = ArgumentParser('Neural Image Assesment evaluate')
 
     # variables
-    p.add_argument('--net', type = str, default = 'inception',  choices=['vgg_16', 'inception', 'mobilenet'],
+    p.add_argument('-net', type = str, default = 'inception',  choices=['vgg_16', 'inception', 'mobilenet'],
                    help = 'network used for evaluating (default: inception)')
-    p.add_argument('--file', type = str, default = None,
+    p.add_argument('-file', type = str, default = None,
                    help = 'path of the image that will be evaluated')
-    p.add_argument('--folder', type = str, default = None,
+    p.add_argument('-folder', type = str, default = None,
                    help = 'path of the folder containing the files')
-    p.add_argument('--vb', type = int, default = 1, choices=[0, 1], 
+    p.add_argument('-vb', type = int, default = 1, choices=[0, 1], 
                    help = 'print information (default: 1)')
     
     #p.add_argument('--save', type = int, default = 0,  choices=[0, 1],

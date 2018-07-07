@@ -1,5 +1,6 @@
 from keras.callbacks import Callback
 import matplotlib
+matplotlib.use('agg') # avoid _tkinter module not found
 import matplotlib.pyplot as plt
 from IPython.display import clear_output
 
