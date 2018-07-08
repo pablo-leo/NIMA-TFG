@@ -60,12 +60,20 @@ def generate_scores(parser):
     images = np.array(images)
     
     y_pred = model.predict(images)
+    mean_scores = [mean_score(pred) for pred in y_pred]
+    std_scores = [std_score(pred) for pred in y_pred]
     
     print('-------------- Evaluation --------------')
     for i in range(len(files)):
-        score = '{} ({}{})'.format(round(mean_score(y_pred[i]), 3), chr(177), round(std_score(y_pred[i]), 3))
+        score = '{} ({}{})'.format(round(mean_scores[i], 3), chr(177), round(std_scores[i], 3))
         print('{}: {} \n\t{}'.format(i, files[i], score))
     print('----------------------------------------')
+    
+    # save the predictions
+    if parser.save:
+        data = np.stack([files, mean_scores, std_scores], axis = 1)
+        df = pd.DataFrame(data = data, columns = ['file', 'mean', 'std'])
+        df.to_csv('evaluations.csv', index = False)
 
 if __name__ == '__main__':
     p = ArgumentParser('Neural Image Assesment evaluate')
@@ -79,9 +87,8 @@ if __name__ == '__main__':
                    help = 'path of the folder containing the files')
     p.add_argument('-vb', type = int, default = 1, choices=[0, 1], 
                    help = 'print information (default: 1)')
-    
-    #p.add_argument('--save', type = int, default = 0,  choices=[0, 1],
-    #               help = 'save the evaluations to a csv file (default: 0)')
+    p.add_argument('-save', type = int, default = 0,  choices=[0, 1],
+                   help = 'save the evaluations to a csv file (default: 0)')
 
     generate_scores(p.parse_args())
     sys.exit(0)
