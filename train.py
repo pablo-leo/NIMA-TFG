@@ -17,8 +17,8 @@ def train(parser):
     
     # get the model name
     model_name = parser.net
-    
-    # get the directory of the annotations and the images
+
+    # get the directory of the annotations and imgs 
     train_dir_annotations = parser.andir
     train_dir_images = parser.imdir
     
@@ -96,8 +96,8 @@ def train(parser):
                          callbacks = [checkpoint, plotlogs],
                          validation_data = validation_data,
                          validation_steps = len(validation_data),
-                         workers = 4,
-                         use_multiprocessing = True)
+                         workers = 4)
+                         #use_multiprocessing = True)
 
 if __name__ == '__main__':
     p = ArgumentParser('Neural Image Assesment train')
